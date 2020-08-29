@@ -2,6 +2,7 @@ import 'package:FirbaseAuthentication/Constants.dart';
 import 'package:FirbaseAuthentication/SignIn.dart';
 import 'package:FirbaseAuthentication/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:FirbaseAuthentication/ViewSearch.dart';
 
 class ChatRoom extends StatefulWidget {
   @override
@@ -38,6 +39,14 @@ class _ChatRoomState extends State<ChatRoom> {
             },
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => ViewSearch()));
+        },
+        backgroundColor: Colors.green,
+        child: Icon(Icons.search),
       ),
     );
   }

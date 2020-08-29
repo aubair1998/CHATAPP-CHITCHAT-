@@ -1,12 +1,13 @@
 //import 'package:FirbaseAuthentication/SignIn.dart';
 // import 'package:FirbaseAuthentication/auth.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:FirbaseAuthentication/ChatRoom.dart';
-// import 'package:FirbaseAuthentication/SignIn.dart';
+import 'package:FirbaseAuthentication/ChatRoom.dart';
+import 'package:FirbaseAuthentication/SignIn.dart';
 import 'package:FirbaseAuthentication/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-//import 'package:FirbaseAuthentication/SignUp.dart';
+import 'package:FirbaseAuthentication/SignUp.dart';
+import 'package:FirbaseAuthentication/ViewSearch.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.green,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: AuthService().handleAuth());
+        home: ChatRoom());
   }
 }
 
