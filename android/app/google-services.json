@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "305867457646",
+    "firebase_url": "https://firauthentication-a1ee3.firebaseio.com",
+    "project_id": "firauthentication-a1ee3",
+    "storage_bucket": "firauthentication-a1ee3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:305867457646:android:cb1e55ce4445a5d254927f",
+        "android_client_info": {
+          "package_name": "com.example.FirbaseAuthentication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "305867457646-iq2n6dc8ek6uuak2snqnhc76euq8fqvb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAafiQ1wtqF9UEOp2jZvNyjHUw_67OVSTE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "305867457646-iq2n6dc8ek6uuak2snqnhc76euq8fqvb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
