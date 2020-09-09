@@ -71,7 +71,7 @@ class _DashboardState extends State<Dashboard> {
                   borderSide: BorderSide(color: Colors.white)),
               enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white)),
-              hintText: "Search Username",
+              hintText: "Search Usernamee",
               hintStyle: TextStyle(color: Colors.white),
             )),
         actions: <Widget>[
