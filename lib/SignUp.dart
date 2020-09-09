@@ -1,13 +1,17 @@
-import 'package:FirbaseAuthentication/ChatRoom.dart';
+import 'package:FirbaseAuthentication/DashBoard.dart';
+import 'package:FirbaseAuthentication/Services/Database.dart';
 // import 'package:FirbaseAuthentication/Models/userPerson.dart';
 // import 'package:FirbaseAuthentication/SignIn.dart';
-import 'package:FirbaseAuthentication/auth.dart';
+import 'package:FirbaseAuthentication/Services/auth.dart';
+import 'package:FirbaseAuthentication/Services/helper.dart';
 import 'package:FirbaseAuthentication/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
 class SignUp extends StatefulWidget {
+  final Function toggle;
+  SignUp(this.toggle);
   @override
   _SignUpState createState() => _SignUpState();
 }
@@ -16,26 +20,9 @@ class _SignUpState extends State<SignUp> {
   // AsyncSnapshot<User> snapshot;
   // UserPerson up = new UserPerson();
   bool isloading = false;
-  // signUpforme() {
-  //   if (formkey.currentState.validate()) {
-  //     //  formkey.currentState.save();
-  //     //FocusScope.of(context).unfocus();
-  //     setState(() {
-  //       isloading = true;
-  //     });
-  //     try {
-  //       authServices
-  //           .signUpWithEmailAndPassword(
-  //               emailtexteditcon.text, passwordtexteditcon.text)
-  //           .then((val) {
-  //         print(val.userId + "has logged in");
-  //       });
-  //     } catch (e) {
-  //       print(e);
-  //     }
-  //   }
-  // }
+
   AuthService auth = new AuthService();
+  DatabaseMethods databaseMethods = new DatabaseMethods();
   var formkey = GlobalKey<FormState>();
   TextEditingController usertexteditcon = new TextEditingController();
   TextEditingController emailtexteditcon = new TextEditingController();
@@ -62,18 +49,25 @@ class _SignUpState extends State<SignUp> {
 
     if (formState.validate()) {
       formState.save();
+      Map<String, String> userinfoMap = {
+        "name": usertexteditcon.text,
+        "email": emailtexteditcon.text
+      };
+      Helperfunctions.saveUserNameSharedPreference(usertexteditcon.text);
+      Helperfunctions.saveUserNameSharedPreference(emailtexteditcon.text);
       setState(() {
         isloading = true;
       });
       try {
         auth
-            .signUpwithvalidation(
-                emailtexteditcon.text, passwordtexteditcon.text)
+            .signUp(emailtexteditcon.text, passwordtexteditcon.text)
             .then((value) => {
                   //print("${value.uID}" + "yes")
                 });
+
+        databaseMethods.uploaduserdata(userinfoMap);
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => ChatRoom()));
+            context, MaterialPageRoute(builder: (context) => Dashboard()));
       } catch (e) {
         print(e);
       }
@@ -160,6 +154,7 @@ class _SignUpState extends State<SignUp> {
                       GestureDetector(
                         //solved?     whatsapp me what the problem is
                         onTap: signUpwithvalidation,
+
                         child: Container(
                             alignment: Alignment.center,
                             padding: EdgeInsets.symmetric(vertical: 18),
@@ -194,6 +189,9 @@ class _SignUpState extends State<SignUp> {
                             style: textFieldstylemedium(),
                           ),
                           GestureDetector(
+                            onTap: () {
+                              widget.toggle();
+                            },
                             child: Container(
                               padding: EdgeInsets.symmetric(vertical: 8),
                               child: Text(' SignIn now',

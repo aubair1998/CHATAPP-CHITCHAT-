@@ -1,12 +1,18 @@
 //mine code
 //import 'package:FirbaseAuthentication/Home.dart';
+import 'package:FirbaseAuthentication/DashBoard.dart';
+import 'package:FirbaseAuthentication/Services/Database.dart';
+import 'package:FirbaseAuthentication/Services/helper.dart';
 import 'package:FirbaseAuthentication/SignUp.dart';
 import 'package:FirbaseAuthentication/widgets/widgets.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:FirbaseAuthentication/auth.dart';
+import 'package:FirbaseAuthentication/Services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class SignIn extends StatefulWidget {
+  final Function toggle;
+  SignIn(this.toggle);
   @override
   _SignInState createState() => _SignInState();
 }
@@ -15,54 +21,34 @@ class _SignInState extends State<SignIn> {
   AuthService auth = new AuthService();
   TextEditingController emailtexteditcon = new TextEditingController();
   TextEditingController passwordtexteditcon = new TextEditingController();
-  //bool isloading = false;
-
+  DatabaseMethods databaseMethods = new DatabaseMethods();
+  bool isloading = false;
+  QuerySnapshot querySnapshot;
   var formkey = GlobalKey<FormState>();
-  // bool signUpCheckvalidation() {
-  //   final form = formkey.currentState;
-  //   if (formkey.currentState.validate()) {
-  //     form.save();
-  //     print('valid input');
-  //     return true;
-  //     //  formkey.currentState.save();
-  //     //FocusScope.of(context).unfocus();
-  //   } else {
-  //     print('invalid input');
-  //     return false;
-  //   }
-  // }
 
-  //
-  // BEFOREEEEEEEEEEEEEEEEE PLZZ YEH PHLW WALA KAAM THA
-  // Future<void> signInwithvalidation() async {
-  //   final formState = formkey.currentState;
-
-  //   if (formState.validate()) {
-  //     formState.save();
-  //     try {
-  //       FirebaseAuth.instance.signInWithEmailAndPassword(
-  //           email: emailtexteditcon.text, password: passwordtexteditcon.text);
-  //       Navigator.push(
-  //           context, MaterialPageRoute(builder: (context) => Home()));
-  //     } catch (e) {
-  //       print(e);
-  //     }
-  //   }
-  // }
   signInwithvalidation() {
     final formState = formkey.currentState;
 
     if (formState.validate()) {
       formState.save();
+
+      databaseMethods.getuserbyuserEmail(emailtexteditcon.text).then((val) {
+        querySnapshot = val;
+        Helperfunctions.saveUserEmailSharedPreference(
+            querySnapshot.docs[0].data()["email"]);
+        Helperfunctions.saveUserNameSharedPreference(
+            querySnapshot.docs[0].data()["name"]);
+      });
       try {
         auth
-            .signInwithvalidation(
-                emailtexteditcon.text, passwordtexteditcon.text)
-            .then((value) => {print("${value.uID}" + "yes")});
-        // FirebaseAuth.instance.signInWithEmailAndPassword(
-        //     email: emailtexteditcon.text, password: passwordtexteditcon.text);
-        // Navigator.push(
-        //     context, MaterialPageRoute(builder: (context) => Home()));
+            .signIn(emailtexteditcon.text, passwordtexteditcon.text)
+            .then((value) => {
+                  if (value.uID != null)
+                    {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => Dashboard()))
+                    }
+                });
       } catch (e) {
         print(e);
       }
@@ -152,13 +138,21 @@ class _SignInState extends State<SignIn> {
                           style: textFieldstylemedium(),
                         ),
                         GestureDetector(
+                          onTap: () {
+                            widget.toggle();
+                          },
                           child: Container(
                             padding: EdgeInsets.symmetric(vertical: 8),
-                            child: Text(' Register now',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                    decoration: TextDecoration.underline)),
+                            child: GestureDetector(
+                              onTap: () {
+                                widget.toggle();
+                              },
+                              child: Text(' Register now',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      decoration: TextDecoration.underline)),
+                            ),
                           ),
                         ),
                       ],
